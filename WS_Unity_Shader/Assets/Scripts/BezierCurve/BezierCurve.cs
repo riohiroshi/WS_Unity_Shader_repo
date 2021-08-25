@@ -23,10 +23,10 @@ public class BezierCurve : MonoBehaviour
     [SerializeField] private int _debugPoint1 = 1;
     [SerializeField] private int _debugPoint2 = 1;
 
-    private Vector3 _point0 { get => _transform0 ? _transform0.position : Vector3.one; }
-    private Vector3 _point1 { get => _transform1 ? _transform1.position : Vector3.one; }
-    private Vector3 _point2 { get => _transform2 ? _transform2.position : Vector3.one; }
-    private Vector3 _point3 { get => _transform3 ? _transform3.position : Vector3.one; }
+    private Vector3 _startPoint { get => _transform0 ? _transform0.position : Vector3.one; }
+    private Vector3 _controlPoint0 { get => _transform1 ? _transform1.position : Vector3.one; }
+    private Vector3 _controlPoint1 { get => _transform2 ? _transform2.position : Vector3.one; }
+    private Vector3 _endPoint { get => _transform3 ? _transform3.position : Vector3.one; }
 
     private List<Vector3> _allPoints = new List<Vector3>();
     private List<float> _allT = new List<float>();
@@ -57,10 +57,22 @@ public class BezierCurve : MonoBehaviour
         var it2 = it * it;
         var t2 = t * t;
 
-        return it2 * it * _point0 +
-               3f * it2 * t * _point1 +
-               3f * t2 * it * _point2 +
-               t2 * t * _point3;
+        return it2 * it * _startPoint +
+               3f * it2 * t * _controlPoint0 +
+               3f * t2 * it * _controlPoint1 +
+               t2 * t * _endPoint;
+    }
+
+    private Vector3 Evaluate2(float t)
+    {
+        var evaluate_0_0 = Vector3.Lerp(_startPoint, _controlPoint0, t);
+        var evaluate_0_1 = Vector3.Lerp(_controlPoint0, _controlPoint1, t);
+        var evaluate_0_2 = Vector3.Lerp(_controlPoint1, _endPoint, t);
+
+        var evaluate_1_0 = Vector3.Lerp(evaluate_0_0, evaluate_0_1, t);
+        var evaluate_1_1 = Vector3.Lerp(evaluate_0_1, evaluate_0_2, t);
+
+        return Vector3.Lerp(evaluate_1_0, evaluate_1_1, t);
     }
 
     private void GeneratePoints(Vector3 a, Vector3 b, float t, int level)
@@ -97,9 +109,9 @@ public class BezierCurve : MonoBehaviour
     {
         Gizmos.color = Color.red;
 
-        DrawPoints(_point0, _point1, _point2, _point3);
+        DrawPoints(_startPoint, _controlPoint0, _controlPoint1, _endPoint);
 
-        var lastPoint = _point0;
+        var lastPoint = _startPoint;
         for (int i = 1; i <= _divide; i++)
         {
             if (i > _debugPoint1) { return; }
@@ -116,9 +128,9 @@ public class BezierCurve : MonoBehaviour
 
             if (i != _debugPoint1) { continue; }
 
-            var pointGreen0 = Vector3.Lerp(_point0, _point1, t);
-            var pointGreen1 = Vector3.Lerp(_point1, _point2, t);
-            var pointGreen2 = Vector3.Lerp(_point2, _point3, t);
+            var pointGreen0 = Vector3.Lerp(_startPoint, _controlPoint0, t);
+            var pointGreen1 = Vector3.Lerp(_controlPoint0, _controlPoint1, t);
+            var pointGreen2 = Vector3.Lerp(_controlPoint1, _endPoint, t);
 
             Debug.DrawLine(pointGreen0, pointGreen1, Color.green);
             Debug.DrawLine(pointGreen1, pointGreen2, Color.green);
@@ -136,12 +148,12 @@ public class BezierCurve : MonoBehaviour
         _allT.Clear();
         Gizmos.color = Color.red;
 
-        DrawPoints(_point0 + _offset, _point1 + _offset, _point2 + _offset, _point3 + _offset);
+        DrawPoints(_startPoint + _offset, _controlPoint0 + _offset, _controlPoint1 + _offset, _endPoint + _offset);
 
-        GeneratePoints(_point0, _point3, 0.5f, 2);
+        GeneratePoints(_startPoint, _endPoint, 0.5f, 2);
         _pointCount = _allPoints.Count;
 
-        var lastPoint = _point0 + _offset;
+        var lastPoint = _startPoint + _offset;
         for (int i = 1; i < _allPoints.Count; i++)
         {
             if (i > _debugPoint2) { return; }
@@ -157,9 +169,9 @@ public class BezierCurve : MonoBehaviour
 
             if (i != _debugPoint2) { continue; }
 
-            var pointGreen0 = Vector3.Lerp(_point0, _point1, _allT[i]);
-            var pointGreen1 = Vector3.Lerp(_point1, _point2, _allT[i]);
-            var pointGreen2 = Vector3.Lerp(_point2, _point3, _allT[i]);
+            var pointGreen0 = Vector3.Lerp(_startPoint, _controlPoint0, _allT[i]);
+            var pointGreen1 = Vector3.Lerp(_controlPoint0, _controlPoint1, _allT[i]);
+            var pointGreen2 = Vector3.Lerp(_controlPoint1, _endPoint, _allT[i]);
 
             Debug.DrawLine(pointGreen0 + _offset, pointGreen1 + _offset, Color.green);
             Debug.DrawLine(pointGreen1 + _offset, pointGreen2 + _offset, Color.green);

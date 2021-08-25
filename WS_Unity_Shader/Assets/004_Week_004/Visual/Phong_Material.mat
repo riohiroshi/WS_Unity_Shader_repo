@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Phong_Material
+  m_Shader: {fileID: 4800000, guid: f4de9277231bc1c478a49e603c9215ce, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - _Ambient: 0.1
+    - _AmbientStrength: 0.1
+    - _AttenuationLinear: 4.5
+    - _AttenuationQuadratic: 75
+    - _Diffuse: 0.7
+    - _LightPosition: 9.4
+    - _Shininess: 32
+    - _Specular: 0.25
+    m_Colors:
+    - _Ambient: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    - _AmbientColor: {r: 0.09999997, g: 0, b: 0, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LightColor: {r: 0.5386894, g: 0.8207547, b: 0.5464324, a: 1}
+    - _LightColor0: {r: 0, g: 0, b: 0, a: 1}
+    - _LightColor1: {r: 0.13735186, g: 0.20598453, b: 0.3679245, a: 1}
+    - _LightColor2: {r: 1, g: 0, b: 0, a: 1}
+    - _LightColor3: {r: 0.26415092, g: 0.2602852, b: 0.18832321, a: 1}
+    - _LightPosition: {r: -0.77, g: -0.7, b: -1.42, a: 1}
+    - _LightPosition0: {r: 0, g: 50, b: 0, a: 1}
+    - _LightPosition1: {r: 0, g: 0, b: -10, a: 1}
+    - _LightPosition2: {r: 10, g: 0, b: 0, a: 1}
+    - _LightPosition3: {r: 0, g: 0.5, b: 0, a: 1}
+  m_BuildTextureStacks: []
